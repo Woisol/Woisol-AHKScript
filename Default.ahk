@@ -234,22 +234,16 @@ Capslock & w::^!w
     +a:: SendLoop("+{home}")
     s:: SendLoop("{left}")
     +s:: SendLoop("+{left}")
-    !s:: SendLoop("!{left}")
     d:: SendLoop("{down}")
     +d:: SendLoop("+{down}")
-    !d:: SendLoop("!{down}")
     f:: SendLoop("{right}")
     +f:: SendLoop("+{right}")
-    !f:: SendLoop("!{right}")
     e:: SendLoop("{up}")
     +e:: SendLoop("+{up}")
-    !e:: SendLoop("!{up}")
     w:: SendLoop("^{left}")
     +w:: SendLoop("^+{left}")
     r:: SendLoop("^{right}")
-    +r:: {
-        SendLoop("^+{right}")
-    }
+    +r:: SendLoop("^+{right}")
     i:: {
         global
         tmpTooltip("Insert Mode")
@@ -290,7 +284,6 @@ Capslock & w::^!w
                 else
                     sendtext times
                 send "{enter}"
-                ; return
             } else {
                 send "^{home}"
                 times := mod(times, 1000)
@@ -317,7 +310,6 @@ Capslock & w::^!w
     #v::#v
     z:: SendLoop("^z")
     +z:: SendLoop("^y")
-    ; ^y::^y
     q:: {
         if (isDoubleClick("q")) {
             winclose "A"
@@ -442,14 +434,18 @@ Capslock & w::^!w
 {
 
     .::.
-    . & a::home
-    . & s::left
-    . & d::down
-    . & f::right
-    . & e::up
+    . & a:: SendLoopWithShift("{home}")
+    . & s:: SendLoopWithShift("{left}")
+    . & d:: SendLoopWithShift("{down}")
+    . & f:: SendLoopWithShift("{right}")
+    . & e:: SendLoopWithShift("{up}")
+    . & w:: SendLoopWithShift("^{left}")
+    . & r:: SendLoopWithShift("^{right}")
     . & g:: {
         global
-        if (isDoubleClick(". & g")) {
+        if (GetKeyState("Shift", "T"))
+            Send("+{end}")
+        else if (isDoubleClick(". & g")) {
             if (inCode()) {
                 send "^g"
                 if (times = 0)
@@ -467,10 +463,7 @@ Capslock & w::^!w
         } else {
             send "{end}"
         }
-
     }
-    . & w::^left
-    . & r::^right
     . & x::esc
     . & c::BackSpace
     . & v::^BackSpace
@@ -558,4 +551,13 @@ SendLoop(key) {
     loop times - 1
         send key
     times := 0
+}
+SendLoopWithShift(key) {
+    global
+    if (GetKeyState("Shift", "T")) {
+        SendLoop("+" . key)
+    }
+    ; !az居然是用这个来拼接字符串的……
+    else
+        SendLoop(key)
 }

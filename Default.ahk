@@ -434,18 +434,16 @@ Capslock & w::^!w
 {
 
     .::.
-    . & a:: SendLoopWithShift("{home}")
-    . & s:: SendLoopWithShift("{left}")
-    . & d:: SendLoopWithShift("{down}")
-    . & f:: SendLoopWithShift("{right}")
-    . & e:: SendLoopWithShift("{up}")
-    . & w:: SendLoopWithShift("^{left}")
-    . & r:: SendLoopWithShift("^{right}")
+    . & a:: SendLoop("{Blind}{home}")
+    . & s:: SendLoop("{Blind}{left}")
+    . & d:: SendLoop("{Blind}{down}")
+    . & f:: SendLoop("{Blind}{right}")
+    . & e:: SendLoop("{Blind}{up}")
+    . & w:: SendLoop("{Blind}^{left}")
+    . & r:: SendLoop("{Blind}^{right}")
     . & g:: {
         global
-        if (GetKeyState("Shift", "T"))
-            Send("+{end}")
-        else if (isDoubleClick(". & g")) {
+        if (isDoubleClick(". & g")) {
             if (inCode()) {
                 send "^g"
                 if (times = 0)
@@ -461,7 +459,7 @@ Capslock & w::^!w
             }
             times := 0
         } else {
-            send "{end}"
+            send "{Blind}{end}"
         }
     }
     . & x::esc
@@ -546,18 +544,35 @@ isDoubleClick(key) {
 }
 SendLoop(key) {
     global
+    ; isShift := key.startswith("+")
+    ; !艹还是用Blind好用哈哈
+    ; if (SubStr(key, 1, 1) = "+") {
+    ;     ; key := key[1:]
+    ;     key := SubStr(key, 2)
+    ;     Send "{Shift down}"
+    ; }
+    ; if(SubStr(key, 1, 1) = "^") {
+    ;     key := SubStr(key, 2)
+    ;     Send "{Alt down}"
+    ; }
     send key
-    times := mod(times, 1000)
-    loop times - 1
+    times := mod(times, 1000) -1
+    loop times
         send key
+    ; send "{" key " " times "}"
+    ; !emm好像效果和用Loop差不多……
     times := 0
+    ; if(isShift){
+    Send "{Shift up}"
+    ; Send "{Alt up}"
+    ; }
 }
-SendLoopWithShift(key) {
-    global
-    if (GetKeyState("Shift", "T")) {
-        SendLoop("+" . key)
-    }
-    ; !az居然是用这个来拼接字符串的……
-    else
-        SendLoop(key)
-}
+; SendLoopWithShift(key) {
+;     global
+;     if (GetKeyState("Shift", "T")) {
+;         SendLoop("+" . key)
+;     }
+;     ; !az居然是用这个来拼接字符串的……
+;     else
+;         SendLoop(key)
+; }

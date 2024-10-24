@@ -1,20 +1,8 @@
-; **
-; * 24-08-02 得以实现关闭窗口功能，继续完善了Normal模式下的其它按键功能，重构，使用了函数
-; * 24-09-18 修改了括号包含选中的逻辑，修复了双击无法输出右括号的问题
-; * 24-10-07 重置逻辑，现在默认输入模式，在输入模式中加入了
+; td 添加“哨兵”模式专门用于闲置电脑时切歌等操作
 global mode := 0
 global times := 0
 global active := true
 
-; #define doubleClickInterval 200
-; #hotif active=true
-; !并不能嵌套hotif
-; !Capslock::{
-;     if(getkeystate("Capslock")=1)
-;     setcapslockstate(0)
-;     else
-;     setcapslockstate(1)
-; }
 ; **----------------------------Actived Common-----------------------------------------------------
 #hotif active = true
 !+':: {
@@ -23,7 +11,6 @@ global active := true
     tmpTooltip("Deactived")
 }
 
-; click:=false
 Capslock:: return
 !Capslock:: {
     capslock := getkeystate("Capslock", "T")
@@ -43,8 +30,6 @@ Capslock:: return
     ;     send "{esc}"
     ; }
 }
-; 这个无效了…………
-; Capslock & a::send "#"
 Capslock & s::#1
 Capslock & d::#2
 Capslock & f::#3
@@ -73,8 +58,6 @@ Capslock & w::^!w
 
 `;::;
 `; & q:: {
-    ; 08-10初步完成符号设计
-    ; 08-15真正实现双击，饶了使用keywait的弯路
     if (isDoubleClick('; & q'))
         send '{BackSpace}{raw}^'
     else
@@ -137,22 +120,10 @@ Capslock & w::^!w
         send "{Right}{BackSpace}{BackSpace}{raw})"
         return
     } else {
-        ; clipSaved := ClipboardAll()
-        ; A_clipboard := ""
-        ; send "^c"
-        ; clipwait 0.2
-
-        ; selectText := A_clipboard
-        ; ; selectText:=editgetselectedtext("A")
-
         send "^c"
         send "("
         send ")"
         send "{left}"
-        ; send "^v"
-        ; sendtext selectText
-
-        ; A_clipboard := clipSaved
     }
 }
 `; & f:: {
@@ -210,7 +181,6 @@ Capslock & w::^!w
 `; & g:: {
     if (isDoubleClick('; & g'))
         send '{BackSpace}{raw}!'
-    ; sendtext 和 send '{raw}'的区别还是有的……{raw}依然是击键所以可以输出中文
     else
         send '?'
 }
@@ -247,7 +217,6 @@ Capslock & w::^!w
         sendtext "{"
     else
         send "{{}{}}{left}"
-    ; 08-17 From FT
 }
 
 #hotif
@@ -260,8 +229,6 @@ Capslock & w::^!w
 #hotif
 ; **----------------------------Normal Mode-----------------------------------------------------
 #hotif mode = 1 && active = true
-; !V2没有#if…………
-; ！啊啊啊绕远路了啊啊啊啊啊
 {
     a:: SendLoop("{home}")
     +a:: SendLoop("+{home}")
@@ -277,13 +244,6 @@ Capslock & w::^!w
     e:: SendLoop("{up}")
     +e:: SendLoop("+{up}")
     !e:: SendLoop("!{up}")
-    ; g::{
-    ;     global
-    ;     send "{end}"
-    ;     loop times - 1
-    ;         send "{end}"
-    ;     times:=0
-    ; }
     w:: SendLoop("^{left}")
     +w:: SendLoop("^+{left}")
     r:: SendLoop("^{right}")
@@ -323,9 +283,6 @@ Capslock & w::^!w
     g:: {
         global
         if (isDoubleClick("g")) {
-            ; title:=
-            ; !针对code特殊化处理
-            ; if(instr(wingettitle("A"),"code")){
             if (inCode()) {
                 send "^g"
                 if (times = 0)
@@ -342,9 +299,7 @@ Capslock & w::^!w
             }
             times := 0
         } else {
-            ; keywait "g"
             send "{end}"
-            ; SendLoop("{end}")
         }
     }
     +g:: SendLoop("+{end}")
@@ -365,19 +320,14 @@ Capslock & w::^!w
     ; ^y::^y
     q:: {
         if (isDoubleClick("q")) {
-            ; title:=""
-            ; wingetactivetitle title
-            ; winget "active", title
-            ; winclose(title, id)
             winclose "A"
-            ;  wingettitle("A")
         } else {
             send "^w"
         }
     }
     +q::^+t
 
-    ; //**----------------------------Others-----------------------------------------------------
+    ; **----------------------------Others-----------------------------------------------------
     t:: {
     }
     y:: {
@@ -412,12 +362,7 @@ Capslock & w::^!w
     }
     n:: {
         if (inCode()) {
-            ; if(isDoubleClick("n")){
-            ;     send  "!+{down}"
-            ; }
-            ; else{
             send "^!{up}"
-            ; }
         }
     }
     !n:: {
@@ -432,21 +377,6 @@ Capslock & w::^!w
     }
 
     #SingleInstance Force
-
-    ; .::
-    ; {
-    ;     activeWindow := WinGetTitle("A")
-
-    ;     WinGetPos &x, &y, &width, &height, activeWindow
-
-    ;     MouseGetPos &mouseX, &mouseY
-
-    ;     newX := mouseX - width / 2
-    ;     newY := mouseY - height / 2
-
-    ;     WinMove newX, newY, , , activeWindow
-    ; }
-
     /:: {
         if (inCode()) {
             send "^/"
@@ -499,16 +429,10 @@ Capslock & w::^!w
     }
     +0:: send "^{end}"
     esc:: {
-        global ;这个声明必须放到最上面……
-        ; if(isDoubleClick("esc")){
+        global
         tmpTooltip("Back to Insert Mode")
         mode := 0
         times := 0
-        ; }
-        ; else{
-        ;     keywait "esc"
-        ;     send "{esc}"
-        ; }
     }
 
 }
@@ -526,9 +450,6 @@ Capslock & w::^!w
     . & g:: {
         global
         if (isDoubleClick(". & g")) {
-            ; title:=
-            ; !针对code特殊化处理
-            ; if(instr(wingettitle("A"),"code")){
             if (inCode()) {
                 send "^g"
                 if (times = 0)
@@ -536,7 +457,6 @@ Capslock & w::^!w
                 else
                     sendtext times
                 send "{enter}"
-                ; return
             } else {
                 send "^{home}"
                 times := mod(times, 1000)
@@ -545,9 +465,7 @@ Capslock & w::^!w
             }
             times := 0
         } else {
-            ; keywait "g"
             send "{end}"
-            ; SendLoop("{end}")
         }
 
     }
@@ -555,7 +473,6 @@ Capslock & w::^!w
     . & r::^right
     . & x::esc
     . & c::BackSpace
-    ; . & + & c::^BackSpace
     . & v::^BackSpace
     . & /::^/
     ^+k:: {
@@ -613,19 +530,12 @@ Capslock & w::^!w
         else
             times *= 10
     }
-    ; +0:: send "^{end}"
 
     . & Space:: {
-        global ;这个声明必须放到最上面……
-        ; if(isDoubleClick("esc")){
+        global
         tmpTooltip("Sticked to Normal Mode")
         mode := 1
         times := 0
-        ; }
-        ; else{
-        ;     keywait "esc"
-        ;     send "{esc}"
-        ; }
     }
 }
 #hotif
@@ -649,155 +559,3 @@ SendLoop(key) {
         send key
     times := 0
 }
-; #hotif
-; #hotif active=false
-;     !+;::active:=true
-;     tmpTooltip("Actived")
-; #hotif
-
-;**----------------------------旧方案1-----------------------------------------------------
-
-; a::
-; {
-;     global
-;     if(mode=0)
-;         send "{Home}"
-;     else
-;         send "{text}a" ; 使用{text}又会导致无法输入中文……
-;     return
-; }
-; s::
-; {
-;     global
-;     if(mode=0)
-;         send "{left}"
-;     else
-;     send "{text}s" ;艹自己调用自己了……
-;     return
-; }
-; d::
-; {
-;     global
-;     if(mode=0)
-;         send "{down}"
-;     else
-;         send "{text}d"
-;     return
-; }
-; f::
-; {
-;     global
-;     if(mode=0)
-;         send "{right}"
-;     else
-;         send "{text}f"
-;     return
-; }
-; e::
-; {
-;     global
-;     if(mode=0)
-;         send "{up}"
-;     else
-;         send "{text}e"
-;     return
-; }
-; g::
-; {
-;     global
-;     if(mode=0)
-;         send "{End}"
-;     else
-;         send "{text}g"
-;     return
-; }
-; w::
-; {
-;     global
-;     if(mode=0)
-;         send "^{left}"
-;     else
-;         send "{text}w"
-;     return
-; }
-; r::
-; {
-;     global
-;     if(mode=0)
-;         send "^{right}"
-;     else
-;         send "{text}r"
-;     return
-; }
-
-; iPress := false
-; i::{
-;     global
-;     if(mode=0){
-;         mode:=1
-;     }
-;     else{
-;         send "{text}i"
-;     }
-; }
-; escPress := false
-; esc::{
-;     global
-;     if (escPress)
-;         return ;啊啊不能同一行写不然报错需要space……这个ahk的报错信息怎么都看不懂啊喂
-;     mode:=0
-;     escPress := true
-;     send "{esc}"
-;     escPress := false
-;     return
-; }
-
-; i::
-; {
-;     hotkey "a", "off"
-; }
-
-; getMode(){
-;     return mode
-; }
-
-; #if mode=0
-; {
-;     ; log mode
-; }
-; #if
-
-; 动态绑定必须要用hotkey
-; hotkey "a",send "{home}"
-; hotkey "s",send "{left}"
-; hotkey "d",send "{down}"
-; hotkey "f",send "{right}"
-; hotkey "e",send "{up}"
-; hotkey "g",send "{end}"
-; hotkey "w",send "{^left}"
-; hotkey "r",send "{^right}"
-
-; i::
-; {
-;     ; global mode := !mode ;可以直接用!切换01，没有=，都是用:=
-;     ; msgbox mode is %mode%
-;     ; log mode
-;     hotkey "a",off
-;     hotkey "s",off
-;     hotkey "d",off
-;     hotkey "f",off
-;     hotkey "e",off
-;     hotkey "g",off
-;     hotkey "w",off
-;     hotkey "r",off
-;     ; hotkey a,toggle
-;     ; hotkey a,toggle
-
-; }
-
-; Capslock & a::send "#"
-; Capslock & s::send "#1" ;注意必须要空格！注释也是……
-; Capslock & d::send "#2"
-; Capslock & f::send "#3"
-; Capslock & g::send "#4"
-; Capslock & h::send "#5"

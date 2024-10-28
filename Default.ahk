@@ -151,8 +151,8 @@ Capslock & w::^!w
         return
     } else {
         send "^c"
-        send "{"
-        send "}"
+        SendText "{"
+        SendText "}"
         send "{left}"
     }
 }
@@ -478,6 +478,10 @@ Capslock & w::^!w
             send "{home}+{end}"
     }
 
+    . & n:: {
+        MouseClick("Left")
+    }
+
     . & 1:: {
         global
         times := times * 10 + 1
@@ -556,7 +560,7 @@ SendLoop(key) {
     ;     Send "{Alt down}"
     ; }
     send key
-    times := mod(times, 1000) -1
+    times := mod(times, 1000) - 1
     loop times
         send key
     ; send "{" key " " times "}"

@@ -44,17 +44,17 @@ Capslock & w::^!w
 3 & e::media_play_pause
 3 & r::media_next
 
-3 & u::7
-3 & i::8
-3 & o::9
-3 & j::4
-3 & k::5
-3 & l::6
-3 & n::1
-3 & m::1
-3 & ,::2
-3 & .::3
-3 & space::0
+3 & u::Numpad7
+3 & i::Numpad8
+3 & o::Numpad9
+3 & j::Numpad4
+3 & k::Numpad5
+3 & l::Numpad6
+3 & n::Numpad1
+3 & m::Numpad1
+3 & ,::Numpad2
+3 & .::Numpad3
+3 & space::Numpad0
 
 `;::;
 `; & q:: {

@@ -56,6 +56,15 @@ Capslock & w::^!w
 3 & .::Numpad3
 3 & space::Numpad0
 
+3 & 2:: {
+    loop 10
+        send "{Up}"
+}
+3 & 4:: {
+    loop 10
+        send "{Down}"
+}
+
 `;::;
 `; & q:: {
     if (isDoubleClick('; & q'))
@@ -108,7 +117,7 @@ Capslock & w::^!w
     }
 }
 
-`; & space:: {
+`; & j:: {
     send "^v"
 }
 `; & r:: {
@@ -463,15 +472,15 @@ Capslock & w::^!w
         }
     }
     . & x::esc
-    . & c::BackSpace
-    . & v::^BackSpace
+    . & c:: SendLoop("{BackSpace}")
+    . & v:: SendLoop("^{BackSpace}")
     . & /::^/
     ^+k:: {
         if (inCode()) {
             send "^+k"
             return
         }
-        send "{home}{home}+{end}{BackSpace}{BackSpace}"
+        SendLoop("{home}{home}+{end}{BackSpace}{BackSpace}")
     }
     ^l:: {
         if (!inCode())
@@ -526,7 +535,7 @@ Capslock & w::^!w
             times *= 10
     }
 
-    . & Space:: {
+    . & ,:: {
         global
         tmpTooltip("Sticked to Normal Mode")
         mode := 1

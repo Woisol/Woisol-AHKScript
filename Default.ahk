@@ -1,4 +1,4 @@
-; td 添加“哨兵”模式专门用于闲置电脑时切歌等操作
+; TODO 添加“哨兵”模式专门用于闲置电脑时切歌等操作
 global mode := 0
 global times := 0
 global active := true
@@ -176,15 +176,15 @@ Capslock & w::^!w
         return
     }
     if (doubleClick) {
-        send '{Right}{BackSpace}{BackSpace}'
-        send '"'
-        send '"'
-        send "{left}"
+        send '{BackSpace}{raw}"'
+        ; send '"'
+        ; send '"'
+        ; send "{left}"
     } else {
         send "^c"
         send "'"
-        send "'"
-        send "{left}"
+        ; send "'"
+        ; send "{left}"
     }
 }
 `; & g:: {
@@ -529,7 +529,10 @@ Capslock & w::^!w
     }
     . & 0:: {
         global
-        if (times = 0)
+        if (isDoubleClick(". & 0")) {
+            send "^{end}"
+        }
+        else if (times = 0)
             send "^{home}"
         else
             times *= 10

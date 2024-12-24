@@ -1,4 +1,4 @@
-; TODO 添加“哨兵”模式专门用于闲置电脑时切歌等操作
+; @todo 添加“哨兵”模式专门用于闲置电脑时切歌等操作
 global mode := 0
 global times := 0
 global active := true
@@ -236,7 +236,7 @@ Capslock & w::^!w
     tmpTooltip("Actived")
 }
 #hotif
-; **----------------------------Normal Mode-----------------------------------------------------
+; **----------------------------@section-Normal Mode-----------------------------------------------------
 #hotif mode = 1 && active = true
 {
     a:: SendLoop("{home}")
@@ -328,7 +328,7 @@ Capslock & w::^!w
     }
     +q::^+t
 
-    ; **----------------------------Others-----------------------------------------------------
+    ; **----------------------------@section-Normal Mode-Others-----------------------------------------------------
     t:: {
     }
     y:: {
@@ -375,6 +375,18 @@ Capslock & w::^!w
         if (inCode()) {
             send "^!{down}"
         }
+    }
+    F1::
+    F10:: {
+        Send "{Media_Prev}"
+    }
+    F2::
+    F11:: {
+        Send "{Media_Play_Pause}"
+    }
+    F3::
+    F12:: {
+        Send "{Media_Next}"
     }
 
     #SingleInstance Force
@@ -438,7 +450,7 @@ Capslock & w::^!w
 
 }
 #hotif
-; **----------------------------Insert Mode-----------------------------------------------------
+; **----------------------------@section-Insert Mode-----------------------------------------------------
 #hotif mode = 0 && active = true
 {
 
@@ -537,6 +549,12 @@ Capslock & w::^!w
         else
             times *= 10
     }
+    ; !无法实现
+    ; ~. Up:: {
+    ;     global
+    ;     times := 0
+    ;     Send "{End}"
+    ; }
 
     . & ,:: {
         global
@@ -547,7 +565,7 @@ Capslock & w::^!w
 }
 #hotif
 
-; **----------------------------Functions-----------------------------------------------------
+; **----------------------------@section-Functions-----------------------------------------------------
 tmpTooltip(msg) {
     tooltip msg
     SetTimer () => ToolTip(), -5000
@@ -579,7 +597,7 @@ SendLoop(key) {
     ; !emm好像效果和用Loop差不多……
     times := 0
     ; if(isShift){
-    Send "{Shift up}"
+    ; Send "{Shift up}"
     ; Send "{Alt up}"
     ; }
 }

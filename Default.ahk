@@ -1,5 +1,6 @@
 ; @todo 添加“哨兵”模式专门用于闲置电脑时切歌等操作
 global mode := 0
+; global hasOpt := false
 global times := 0
 global active := true
 
@@ -454,7 +455,7 @@ Capslock & w::^!w
 #hotif mode = 0 && active = true
 {
 
-    .::.
+    ; .::.
     . & a:: SendLoop("{Blind}{home}")
     . & s:: SendLoop("{Blind}{left}")
     . & d:: SendLoop("{Blind}{down}")
@@ -505,38 +506,47 @@ Capslock & w::^!w
 
     . & 1:: {
         global
+        ; hasOpt := true
         times := times * 10 + 1
     }
     . & 2:: {
         global
+        ; hasOpt := true
         times := times * 10 + 2
     }
     . & 3:: {
         global
+        ; hasOpt := true
         times := times * 10 + 3
     }
     . & 4:: {
         global
+        ; hasOpt := true
         times := times * 10 + 4
     }
     . & 5:: {
         global
+        ; hasOpt := true
         times := times * 10 + 5
     }
     . & 6:: {
         global
+        ; hasOpt := true
         times := times * 10 + 6
     }
     . & 7:: {
         global
+        ; hasOpt := true
         times := times * 10 + 7
     }
     . & 8:: {
         global
+        ; hasOpt := true
         times := times * 10 + 8
     }
     . & 9:: {
         global
+        ; hasOpt := true
         times := times * 10 + 9
     }
     . & 0:: {
@@ -546,15 +556,29 @@ Capslock & w::^!w
         }
         else if (times = 0)
             send "^{home}"
-        else
+        else {
+            ; hasOpt := true
             times *= 10
+        }
     }
-    ; !无法实现
+    ; ~~单键不支持……咳是上面也定义了.::.了……
     ; ~. Up:: {
     ;     global
-    ;     times := 0
-    ;     Send "{End}"
+    ;         Send "."
+    ;         times := 0
     ; }
+    ~. Up:: {
+        global
+        ; ！wok！NB了完美解决！
+        ; !使用 ~ 防止处理了其它快捷键就不处理 .
+        ; !使用 A_PriorKey 内部判断是单按还是按了其它按键后按
+        if (A_PriorKey = ".") {
+            Send "."
+            ; hasOpt := false
+        }
+        else
+            times := 0
+    }
 
     . & ,:: {
         global
@@ -596,6 +620,7 @@ SendLoop(key) {
     ; send "{" key " " times "}"
     ; !emm好像效果和用Loop差不多……
     times := 0
+    ; hasOpt := true
     ; if(isShift){
     ; Send "{Shift up}"
     ; Send "{Alt up}"

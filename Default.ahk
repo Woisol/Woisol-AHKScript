@@ -575,6 +575,8 @@ CapsLock & w::^!w
     ;         Send "."
     ;         times := 0
     ; }
+    ; !暂时解决方案……
+    +.::+.
     ~. Up:: {
         global
         ; ！wok！NB了完美解决！
@@ -587,6 +589,7 @@ CapsLock & w::^!w
         else
             times := 0
     }
+    ; .::.
 
     . & ,:: {
         global

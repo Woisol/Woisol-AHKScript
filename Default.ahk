@@ -58,12 +58,12 @@ CapsLock & w::^!w
 3 & space::Numpad0
 
 3 & 2:: {
-    loop 10
-        Send "{Up}"
+    loop 5
+        Send "{WheelUp}"
 }
 3 & 4:: {
-    loop 10
-        Send "{Down}"
+    loop 5
+        Send "{WheelDown}"
 }
 
 `;::;
@@ -156,8 +156,8 @@ CapsLock & w::^!w
         SendText "{"
         return
     }
+    SendText "}"
     if (isDoubleClick('; & v')) {
-        SendText "}"
         return
     } else {
         Send "^c"
@@ -484,6 +484,14 @@ CapsLock & w::^!w
             Send "{Blind}{End}"
         }
     }
+    . & h:: {
+        global
+        if (isDoubleClick(". & h")) {
+            Send "^{End}"
+        }
+        else if (times = 0)
+            Send "^{Home}"
+    }
     . & x::Esc
     . & c:: SendLoop("{BackSpace}")
     . & v:: SendLoop("^{BackSpace}")
@@ -502,6 +510,13 @@ CapsLock & w::^!w
 
     . & n:: {
         MouseClick("Left")
+    }
+    . & m:: {
+        ; if (isDoubleClick(". & m"))
+        ;     MouseMove(-100, -100, 0, "R")
+        ; else
+        ;     MouseMove(50, 50, 0, "R")
+        MouseMove(A_ScreenWidth, A_ScreenHeight)
     }
 
     . & 1:: {
@@ -551,15 +566,8 @@ CapsLock & w::^!w
     }
     . & 0:: {
         global
-        if (isDoubleClick(". & 0")) {
-            Send "^{End}"
-        }
-        else if (times = 0)
-            Send "^{Home}"
-        else {
-            ; hasOpt := true
-            times *= 10
-        }
+        ; hasOpt := true
+        times *= 10
     }
     ; ~~单键不支持……咳是上面也定义了.::.了……
     ; ~. Up:: {
@@ -595,7 +603,10 @@ tmpTooltip(msg) {
     SetTimer () => ToolTip(), -5000
 }
 inCode() {
-    return WinGetProcessName("A") == "Code.exe"
+    switch (WinGetProcessName("A")) {
+        case "Code.exe": return 1
+        default: return 0
+    }
 }
 isDoubleClick(key) {
     return A_PriorHotkey == key && A_TimeSincePriorHotkey < 200

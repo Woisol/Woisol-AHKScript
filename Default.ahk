@@ -12,38 +12,38 @@ global active := true
     tmpTooltip("Deactived")
 }
 
-Capslock:: return
-!Capslock:: {
-    capslock := getkeystate("Capslock", "T")
-    if (capslock)
-        setcapslockstate(0)
+CapsLock:: return
+!CapsLock:: {
+    CapsLock := GetKeyState("CapsLock", "T")
+    if (CapsLock)
+        SetCapsLockState(0)
     else
-        setcapslockstate(1)
+        SetCapsLockState(1)
 
-    ; if(isDoubleClick("Capslock")){
-    ;     capslock:=getkeystate("Capslock","T")
-    ;     if(capslock)
-    ;     setcapslockstate(0)
+    ; if(isDoubleClick("CapsLock")){
+    ;     CapsLock:=getkeystate("CapsLock","T")
+    ;     if(CapsLock)
+    ;     setCapsLockstate(0)
     ;     else
-    ;     setcapslockstate(1)
+    ;     setCapsLockstate(1)
     ; }
     ; else{
-    ;     send "{esc}"
+    ;     Send "{Esc}"
     ; }
 }
-Capslock & s::#1
-Capslock & d::#2
-Capslock & f::#3
-Capslock & g::#4
-Capslock & h::#5
+CapsLock & s::#1
+CapsLock & d::#2
+CapsLock & f::#3
+CapsLock & g::#4
+CapsLock & h::#5
 
-Capslock & q::^!q
-Capslock & w::^!w
+CapsLock & q::^!q
+CapsLock & w::^!w
 
 3::3
-3 & w::media_prev
-3 & e::media_play_pause
-3 & r::media_next
+3 & w::Media_Prev
+3 & e::Media_Play_Pause
+3 & r::Media_Next
 
 3 & u::Numpad7
 3 & i::Numpad8
@@ -59,174 +59,174 @@ Capslock & w::^!w
 
 3 & 2:: {
     loop 10
-        send "{Up}"
+        Send "{Up}"
 }
 3 & 4:: {
     loop 10
-        send "{Down}"
+        Send "{Down}"
 }
 
 `;::;
 `; & q:: {
     if (isDoubleClick('; & q'))
-        send '{BackSpace}{raw}^'
+        Send '{BackSpace}{Raw}^'
     else
-        sendtext '*'
+        SendText '*'
 }
 `; & w:: {
     if (isDoubleClick('; & w'))
-        send '{BackSpace}~'
+        Send '{BackSpace}~'
     else
-        sendtext '#'
+        SendText '#'
 }
 `; & e:: {
     if (isDoubleClick('; & e'))
-        send '{BackSpace}"'
+        Send '{BackSpace}"'
     else
-        sendtext '>'
+        SendText '>'
 }
 `; & a:: {
     if (isDoubleClick('; & a'))
-        send '{BackSpace}='
+        Send '{BackSpace}='
     else
-        sendtext '+'
+        SendText '+'
 }
 `; & s:: {
     if (isDoubleClick('; & s'))
-        send '{BackSpace}_'
+        Send '{BackSpace}_'
     else
-        sendtext '-'
+        SendText '-'
 }
 `; & d:: {
     if (isDoubleClick('; & d'))
-        send '{BackSpace}\'
+        Send '{BackSpace}\'
     else
-        sendtext '/'
+        SendText '/'
 }
 `; & z:: {
     if (isDoubleClick('; & z'))
-        send '{BackSpace}@'
+        Send '{BackSpace}@'
     else
-        sendtext '$'
+        SendText '$'
 }
 `; & x::%
 `; & c:: {
     if (isDoubleClick('; & c')) {
-        send '{BackSpace}|'
+        Send '{BackSpace}|'
     } else {
-        sendtext '&'
+        SendText '&'
     }
 }
 
 `; & j:: {
-    send "^v"
+    Send "^v"
 }
 `; & r:: {
     if (inCode()) {
-        sendtext "("
+        SendText "("
         return
     }
     if (isDoubleClick('; & r')) {
-        send "{Right}{BackSpace}{BackSpace}{raw})"
+        Send "{Right}{BackSpace}{BackSpace}{Raw})"
         return
     } else {
-        send "^c"
-        send "("
-        send ")"
-        send "{left}"
+        Send "^c"
+        Send "("
+        Send ")"
+        Send "{Left}"
     }
 }
 `; & f:: {
     if (inCode()) {
-        sendtext "["
+        SendText "["
         return
     }
     if (isDoubleClick('; & f')) {
-        sendtext "{BackSpace}"
+        SendText "{BackSpace}"
         return
     } else {
-        send "^c"
-        send "["
-        send "]"
-        send "{left}"
+        Send "^c"
+        Send "["
+        Send "]"
+        Send "{Left}"
     }
 }
 `; & v:: {
     if (inCode()) {
-        sendtext "{"
+        SendText "{"
         return
     }
     if (isDoubleClick('; & v')) {
-        sendtext "}"
+        SendText "}"
         return
     } else {
-        send "^c"
+        Send "^c"
         SendText "{"
         SendText "}"
-        send "{left}"
+        Send "{Left}"
     }
 }
 `; & t:: {
     doubleClick := isDoubleClick('; & t')
     if (inCode()) {
         if (doubleClick) {
-            send '{BackSpace}{Raw}"'
+            Send '{BackSpace}{Raw}"'
             return
         }
-        sendtext "'"
+        SendText "'"
         return
     }
     if (doubleClick) {
-        send '{BackSpace}{raw}"'
-        ; send '"'
-        ; send '"'
-        ; send "{left}"
+        Send '{BackSpace}{Raw}"'
+        ; Send '"'
+        ; Send '"'
+        ; Send "{Left}"
     } else {
-        send "^c"
-        send "'"
-        ; send "'"
-        ; send "{left}"
+        Send "^c"
+        Send "'"
+        ; Send "'"
+        ; Send "{Left}"
     }
 }
 `; & g:: {
     if (isDoubleClick('; & g'))
-        send '{BackSpace}{raw}!'
+        Send '{BackSpace}{Raw}!'
     else
-        send '?'
+        Send '?'
 }
 `; & b:: {
     if (inCode()) {
-        sendtext "<"
+        SendText "<"
         return
     }
     if (isDoubleClick('; & b')) {
-        send "{BackSpace}"
+        Send "{BackSpace}"
         return
     } else {
-        send "^c"
-        sendtext "<"
-        sendtext ">"
-        send "{left}"
+        Send "^c"
+        SendText "<"
+        SendText ">"
+        Send "{Left}"
     }
 }
 
 +9:: {
     if (inCode())
-        send "("
+        Send "("
     else
-        send "(){left}"
+        Send "(){Left}"
 }
 [:: {
     if (inCode())
-        send "["
+        Send "["
     else
-        send "[]{left}"
+        Send "[]{Left}"
 }
 +[:: {
     if (inCode())
-        sendtext "{"
+        SendText "{"
     else
-        send "{{}{}}{left}"
+        Send "{{}{}}{Left}"
 }
 
 #hotif
@@ -240,20 +240,20 @@ Capslock & w::^!w
 ; **----------------------------@section-Normal Mode-----------------------------------------------------
 #hotif mode = 1 && active = true
 {
-    a:: SendLoop("{home}")
-    +a:: SendLoop("+{home}")
-    s:: SendLoop("{left}")
-    +s:: SendLoop("+{left}")
-    d:: SendLoop("{down}")
-    +d:: SendLoop("+{down}")
-    f:: SendLoop("{right}")
-    +f:: SendLoop("+{right}")
-    e:: SendLoop("{up}")
-    +e:: SendLoop("+{up}")
-    w:: SendLoop("^{left}")
-    +w:: SendLoop("^+{left}")
-    r:: SendLoop("^{right}")
-    +r:: SendLoop("^+{right}")
+    a:: SendLoop("{Home}")
+    +a:: SendLoop("+{Home}")
+    s:: SendLoop("{Left}")
+    +s:: SendLoop("+{Left}")
+    d:: SendLoop("{Down}")
+    +d:: SendLoop("+{Down}")
+    f:: SendLoop("{Right}")
+    +f:: SendLoop("+{Right}")
+    e:: SendLoop("{Up}")
+    +e:: SendLoop("+{Up}")
+    w:: SendLoop("^{Left}")
+    +w:: SendLoop("^+{Left}")
+    r:: SendLoop("^{Right}")
+    +r:: SendLoop("^+{Right}")
     i:: {
         global
         tmpTooltip("Insert Mode")
@@ -261,26 +261,26 @@ Capslock & w::^!w
     }
     o:: {
         global
-        send "{end}{enter}"
+        Send "{End}{Enter}"
         tmpTooltip("Insert Mode")
         mode := 0
     }
     +o:: {
         global
-        send "{home}{enter}{up}"
+        Send "{Home}{Enter}{Up}"
         tmpTooltip("Insert Mode")
         mode := 0
     }
     ; !这个总是不记得用……
     ^o:: {
         global
-        send "{end}{enter}^/"
+        Send "{End}{Enter}^/"
         tmpTooltip("Insert Mode")
         mode := 0
     }
     ^+o:: {
         global
-        send "{home}{enter}{up}^/"
+        Send "{Home}{Enter}{Up}^/"
         tmpTooltip("Insert Mode")
         mode := 0
     }
@@ -288,32 +288,32 @@ Capslock & w::^!w
         global
         if (isDoubleClick("g")) {
             if (inCode()) {
-                send "^g"
+                Send "^g"
                 if (times = 0)
-                    sendtext "1"
+                    SendText "1"
                 else
-                    sendtext times
-                send "{enter}"
+                    SendText times
+                Send "{Enter}"
             } else {
-                send "^{home}"
-                times := mod(times, 1000)
+                Send "^{Home}"
+                times := Mod(times, 1000)
                 loop times - 1
-                    send "{down}"
+                    Send "{Down}"
             }
             times := 0
         } else {
-            send "{end}"
+            Send "{End}"
         }
     }
-    +g:: SendLoop("+{end}")
+    +g:: SendLoop("+{End}")
     c:: SendLoop("{BackSpace}")
     +c:: SendLoop("^{BackSpace}")
     ^c::^c
     x:: {
         if (isDoubleClick("x")) {
-            send "{esc}"
+            Send "{Esc}"
         } else {
-            send "^c"
+            Send "^c"
         }
     }
     v::^v
@@ -324,7 +324,7 @@ Capslock & w::^!w
         if (isDoubleClick("q")) {
             winclose "A"
         } else {
-            send "^w"
+            Send "^w"
         }
     }
     +q::^+t
@@ -338,12 +338,12 @@ Capslock & w::^!w
     }
     p:: {
         if (inCode()) {
-            send "^+{F5}{F5}"
+            Send "^+{F5}{F5}"
         }
     }
     +p:: {
         if (inCode()) {
-            send "+{F5}"
+            Send "+{F5}"
         }
     }
     h:: {
@@ -352,29 +352,29 @@ Capslock & w::^!w
     }
     k:: {
         if (inCode()) {
-            send "^+k"
+            Send "^+k"
             return
         }
-        send "{home}{home}+{end}{BackSpace}{BackSpace}"
+        Send "{Home}{Home}+{End}{BackSpace}{BackSpace}"
     }
     l:: {
-        send "{home}+{end}"
+        Send "{Home}+{End}"
     }
     b:: {
     }
     n:: {
         if (inCode()) {
-            send "^!{up}"
+            Send "^!{Up}"
         }
     }
     !n:: {
         if (inCode()) {
-            send "!+{down}"
+            Send "!+{Down}"
         }
     }
     m:: {
         if (inCode()) {
-            send "^!{down}"
+            Send "^!{Down}"
         }
     }
     F1::
@@ -393,7 +393,7 @@ Capslock & w::^!w
     #SingleInstance Force
     /:: {
         if (inCode()) {
-            send "^/"
+            Send "^/"
         }
     }
     ,:: return
@@ -437,12 +437,12 @@ Capslock & w::^!w
     0:: {
         global
         if (times = 0)
-            send "^{home}"
+            Send "^{Home}"
         else
             times *= 10
     }
-    +0:: send "^{end}"
-    esc:: {
+    +0:: Send "^{End}"
+    Esc:: {
         global
         tmpTooltip("Back to Insert Mode")
         mode := 0
@@ -456,48 +456,48 @@ Capslock & w::^!w
 {
 
     ; .::.
-    . & a:: SendLoop("{Blind}{home}")
-    . & s:: SendLoop("{Blind}{left}")
-    . & d:: SendLoop("{Blind}{down}")
-    . & f:: SendLoop("{Blind}{right}")
-    . & e:: SendLoop("{Blind}{up}")
-    . & w:: SendLoop("{Blind}^{left}")
-    . & r:: SendLoop("{Blind}^{right}")
+    . & a:: SendLoop("{Blind}{Home}")
+    . & s:: SendLoop("{Blind}{Left}")
+    . & d:: SendLoop("{Blind}{Down}")
+    . & f:: SendLoop("{Blind}{Right}")
+    . & e:: SendLoop("{Blind}{Up}")
+    . & w:: SendLoop("{Blind}^{Left}")
+    . & r:: SendLoop("{Blind}^{Right}")
     . & g:: {
         global
         if (isDoubleClick(". & g")) {
             if (inCode()) {
-                send "^g"
+                Send "^g"
                 if (times = 0)
-                    sendtext "1"
+                    SendText "1"
                 else
-                    sendtext times
-                send "{enter}"
+                    SendText times
+                Send "{Enter}"
             } else {
-                send "^{home}"
-                times := mod(times, 1000)
+                Send "^{Home}"
+                times := Mod(times, 1000)
                 loop times - 1
-                    send "{down}"
+                    Send "{Down}"
             }
             times := 0
         } else {
-            send "{Blind}{end}"
+            Send "{Blind}{End}"
         }
     }
-    . & x::esc
+    . & x::Esc
     . & c:: SendLoop("{BackSpace}")
     . & v:: SendLoop("^{BackSpace}")
     . & /::^/
     ^+k:: {
         if (inCode()) {
-            send "^+k"
+            Send "^+k"
             return
         }
-        SendLoop("{home}{home}+{end}{BackSpace}{BackSpace}")
+        SendLoop("{Home}{Home}+{End}{BackSpace}{BackSpace}")
     }
     ^l:: {
         if (!inCode())
-            send "{home}+{end}"
+            Send "{Home}+{End}"
     }
 
     . & n:: {
@@ -552,10 +552,10 @@ Capslock & w::^!w
     . & 0:: {
         global
         if (isDoubleClick(". & 0")) {
-            send "^{end}"
+            Send "^{End}"
         }
         else if (times = 0)
-            send "^{home}"
+            Send "^{Home}"
         else {
             ; hasOpt := true
             times *= 10
@@ -591,14 +591,14 @@ Capslock & w::^!w
 
 ; **----------------------------@section-Functions-----------------------------------------------------
 tmpTooltip(msg) {
-    tooltip msg
+    ToolTip msg
     SetTimer () => ToolTip(), -5000
 }
 inCode() {
-    return wingetprocessname("A") == "Code.exe"
+    return WinGetProcessName("A") == "Code.exe"
 }
 isDoubleClick(key) {
-    return A_priorHotkey == key && A_timeSincePriorHotkey < 200
+    return A_PriorHotkey == key && A_TimeSincePriorHotkey < 200
 }
 SendLoop(key) {
     global
@@ -607,23 +607,23 @@ SendLoop(key) {
     ; if (SubStr(key, 1, 1) = "+") {
     ;     ; key := key[1:]
     ;     key := SubStr(key, 2)
-    ;     Send "{Shift down}"
+    ;     Send "{Shift Down}"
     ; }
     ; if(SubStr(key, 1, 1) = "^") {
     ;     key := SubStr(key, 2)
-    ;     Send "{Alt down}"
+    ;     Send "{Alt Down}"
     ; }
-    send key
-    times := mod(times, 1000) - 1
+    Send key
+    times := Mod(times, 1000) - 1
     loop times
-        send key
-    ; send "{" key " " times "}"
+        Send key
+    ; Send "{" key " " times "}"
     ; !emm好像效果和用Loop差不多……
     times := 0
     ; hasOpt := true
     ; if(isShift){
-    ; Send "{Shift up}"
-    ; Send "{Alt up}"
+    ; Send "{Shift Up}"
+    ; Send "{Alt Up}"
     ; }
 }
 ; SendLoopWithShift(key) {

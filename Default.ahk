@@ -576,14 +576,18 @@ CapsLock & w::^!w
     ;         times := 0
     ; }
     ; !暂时解决方案……
-    +.::+.
+    ; +.::+.
+    +. Up::
+    ^. Up::
+    !. Up::
+    #. Up::
     ~. Up:: {
         global
         ; ！wok！NB了完美解决！
         ; !使用 ~ 防止处理了其它快捷键就不处理 .
         ; !使用 A_PriorKey 内部判断是单按还是按了其它按键后按
         if (A_PriorKey = ".") {
-            Send "."
+            Send "{Blind}."
             ; hasOpt := false
         }
         else

@@ -12,6 +12,7 @@ global active := true
     tmpTooltip("Deactived")
 }
 
+; @section-CapsLock
 CapsLock:: return
 !CapsLock:: {
     CapsLock := GetKeyState("CapsLock", "T")
@@ -40,6 +41,7 @@ CapsLock & h::#5
 CapsLock & q::^!q
 CapsLock & w::^!w
 
+; @section-3
 3::3
 3 & w::Media_Prev
 3 & e::Media_Play_Pause
@@ -66,6 +68,7 @@ CapsLock & w::^!w
         Send "{WheelDown}"
 }
 
+; @section-;
 `;::;
 `; & q:: {
     if (isDoubleClick('; & q'))
@@ -142,12 +145,12 @@ CapsLock & w::^!w
         return
     }
     if (isDoubleClick('; & f')) {
-        SendText "{BackSpace}"
+        Send "{BackSpace}"
         return
     } else {
         Send "^c"
-        Send "["
-        Send "]"
+        SendText "["
+        SendText "]"
         Send "{Left}"
     }
 }
@@ -156,8 +159,8 @@ CapsLock & w::^!w
         SendText "{"
         return
     }
-    SendText "}"
     if (isDoubleClick('; & v')) {
+        Send "{BackSpace}"
         return
     } else {
         Send "^c"
@@ -377,6 +380,7 @@ CapsLock & w::^!w
             Send "^!{Down}"
         }
     }
+    Delete:: SendLoop("{Del}")
     F1::
     F10:: {
         Send "{Media_Prev}"
@@ -493,8 +497,20 @@ CapsLock & w::^!w
             Send "^{Home}"
     }
     . & x::Esc
-    . & c:: SendLoop("{BackSpace}")
-    . & v:: SendLoop("^{BackSpace}")
+    . & c:: {
+        ; !"T"❌，这个是代表模式，用T则软件内部判断状态，会导致Shift的组合键也导致判定为按下，用R才是实时判断
+        if (GetKeyState("Shift", "P"))
+            SendLoop("{Del}")
+        else
+            SendLoop("{BackSpace}")
+    }
+    . & v:: {
+        if (GetKeyState("Shift", "P"))
+            SendLoop("^{Del}")
+        else
+            SendLoop("^{BackSpace}")
+    }
+
     . & /::^/
     ^+k:: {
         if (inCode()) {
@@ -518,6 +534,7 @@ CapsLock & w::^!w
         ;     MouseMove(50, 50, 0, "R")
         MouseMove(A_ScreenWidth, A_ScreenHeight)
     }
+    . & Delete:: SendLoop("{Blind}{Del}")
 
     . & 1:: {
         global

@@ -5,12 +5,19 @@ global times := 0
 global active := true
 
 ; **----------------------------Actived Common-----------------------------------------------------
-#hotif active = true
 !+':: {
     global
-    active := false
-    tmpTooltip("Deactived")
+    if (active) {
+        active := false
+        tmpTooltip("Deactived")
+    }
+    else {
+        active := true
+        tmpTooltip("Actived")
+    }
+    Send "!+;"
 }
+#hotif active = true
 
 ; @section-CapsLock
 CapsLock:: return
@@ -233,13 +240,8 @@ CapsLock & w::^!w
 }
 
 #hotif
-#hotif active = false
-!+':: {
-    global
-    active := true
-    tmpTooltip("Actived")
-}
-#hotif
+; #hotif active = false
+; #hotif
 ; **----------------------------@section-Normal Mode-----------------------------------------------------
 #hotif mode = 1 && active = true
 {

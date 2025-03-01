@@ -47,6 +47,9 @@ CapsLock & h::#5
 
 CapsLock & q::^!q
 CapsLock & w::^!w
+CapsLock & e:: ActivateOrRun("msedge.exe", "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe")
+CapsLock & r:: ActivateOrRun("Code.exe", "D:/Coding/VSCode/Code.exe")
+CapsLock & t:: ActivateOrRun("WindowsTerminal.exe", "wt")
 
 ; @section-3
 3::3
@@ -672,3 +675,20 @@ SendLoop(key) {
 ;     else
 ;         SendLoop(key)
 ; }
+ActivateOrRun(win_exe, path) {
+    if WinExist("ahk_exe " win_exe) {
+        if WinActive("ahk_exe " win_exe)
+        ; !哇趣，注意函数和命令的调用方法不同！
+        ; WinHide
+            WinMinimize "ahk_exe " win_exe
+        else {
+            ; ~~无效，放弃
+            ; WinShow "ahk_exe " win_exe
+            ; WinRestore "ahk_exe " win_exe
+            WinActivate "ahk_exe " win_exe
+        }
+    } else {
+        Run "*RunAs " path
+    }
+
+}

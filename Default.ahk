@@ -19,7 +19,7 @@ global active := true
 }
 #hotif active = true
 
-; @section-CapsLock
+; @section-CapsLocko
 CapsLock:: return
 !CapsLock:: {
     CapsLock := GetKeyState("CapsLock", "T")
@@ -53,7 +53,7 @@ CapsLock & e:: ActivateOrRun("lx-music-desktop.exe", "D:/Amusment/lx-music-deskt
 CapsLock & s:: ActivateOrRun("SiYuan.exe", "D:/Study/Knowledge Management/SiYuan/SiYuan.exe")
 CapsLock & d:: ActivateOrRun("msedge.exe", "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe")
 CapsLock & f:: ActivateOrRun("Code.exe", "D:/Coding/VSCode/Code.exe")
-CapsLock & t:: ActivateOrRun("WindowsTerminal.exe", "wt")
+CapsLock & t:: ActivateOrRun("WindowsTerminal.exe", "wt", , true)
 
 ; @section-3
 3::3
@@ -679,7 +679,7 @@ SendLoop(key) {
 ;     else
 ;         SendLoop(key)
 ; }
-ActivateOrRun(win_exe, path, shortcut := "") {
+ActivateOrRun(win_exe, path, shortcut := "", admin := false) {
     ; "ahk_exe "
     if ProcessExist(win_exe) {
         if shortcut
@@ -692,10 +692,20 @@ ActivateOrRun(win_exe, path, shortcut := "") {
             ; ~~无效，放弃
             ; WinShow "ahk_exe " win_exe
             ; WinRestore "ahk_exe " win_exe
-            WinActivate "ahk_exe " win_exe
+            if WinExist("ahk_exe " win_exe)
+                WinActivate "ahk_exe " win_exe
+            else
+            ; !优化逻辑
+                if admin
+                    Run "*RunAs " path
+                else
+                    Run path
         }
     } else {
+    if admin
         Run "*RunAs " path
+    else
+        Run path
     }
 
 }

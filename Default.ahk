@@ -39,16 +39,20 @@ CapsLock:: return
     ;     Send "{Esc}"
     ; }
 }
-CapsLock & s::#1
-CapsLock & d::#2
-CapsLock & f::#3
-CapsLock & g::#4
-CapsLock & h::#5
+CapsLock & 1::#1
+CapsLock & 2::#2
+CapsLock & 3::#3
+; CapsLock & g::#4
+; CapsLock & h::#5
 
-CapsLock & q::^!q
-CapsLock & w::^!w
-CapsLock & e:: ActivateOrRun("msedge.exe", "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe")
-CapsLock & r:: ActivateOrRun("Code.exe", "D:/Coding/VSCode/Code.exe")
+; CapsLock & q::^!q
+; CapsLock & w::^!w
+CapsLock & q:: ActivateOrRun("QQ.exe", "D:/Social/QQ/QQ.exe", "^!q")
+CapsLock & w:: ActivateOrRun("WeChat.exe", "D:/Social/WeChat/WeChat.exe", "^!w")
+CapsLock & e:: ActivateOrRun("lx-music-desktop.exe", "D:/Amusment/lx-music-desktop/lx-music-desktop.exe", "!m")
+CapsLock & s:: ActivateOrRun("SiYuan.exe", "D:/Study/Knowledge Management/SiYuan/SiYuan.exe")
+CapsLock & d:: ActivateOrRun("msedge.exe", "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe")
+CapsLock & f:: ActivateOrRun("Code.exe", "D:/Coding/VSCode/Code.exe")
 CapsLock & t:: ActivateOrRun("WindowsTerminal.exe", "wt")
 
 ; @section-3
@@ -675,9 +679,12 @@ SendLoop(key) {
 ;     else
 ;         SendLoop(key)
 ; }
-ActivateOrRun(win_exe, path) {
-    if WinExist("ahk_exe " win_exe) {
-        if WinActive("ahk_exe " win_exe)
+ActivateOrRun(win_exe, path, shortcut := "") {
+    ; "ahk_exe "
+    if ProcessExist(win_exe) {
+        if shortcut
+            Send shortcut
+        else if WinActive("ahk_exe " win_exe)
         ; !哇趣，注意函数和命令的调用方法不同！
         ; WinHide
             WinMinimize "ahk_exe " win_exe

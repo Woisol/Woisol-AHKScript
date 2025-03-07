@@ -234,10 +234,15 @@ CapsLock & t:: ActivateOrRun("WindowsTerminal.exe", "wt", , true)
         Send "(){Left}"
 }
 [:: {
-    if (inCode())
-        Send "["
-    else
-        Send "[]{Left}"
+    if (isDoubleClick("[")) {
+        Send "{Right}{Backspace}{Backspace}["
+    }
+    else if (inCode())
+        SendText "["
+    else {
+        SendText "[]"
+        Send "{Left}"
+    }
 }
 +[:: {
     if (inCode())
@@ -680,6 +685,7 @@ SendLoop(key) {
 ;         SendLoop(key)
 ; }
 ActivateOrRun(win_exe, path, shortcut := "", admin := false) {
+    ; ;!逻辑优化
     ; "ahk_exe "
     if ProcessExist(win_exe) {
         if shortcut
@@ -702,10 +708,11 @@ ActivateOrRun(win_exe, path, shortcut := "", admin := false) {
                     Run path
         }
     } else {
-    if admin
-        Run "*RunAs " path
-    else
-        Run path
+        if admin
+            Run "*RunAs " path
+        else
+            Run path
     }
+    Send "{CapsLock up}"
 
 }

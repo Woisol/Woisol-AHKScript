@@ -5,6 +5,7 @@ global times := 0
 global active := true
 
 ; **----------------------------Actived Common-----------------------------------------------------
+
 !+':: {
     global
     if (active) {
@@ -375,7 +376,8 @@ CapsLock & t:: ActivateOrRun("WindowsTerminal.exe", "wt", , true)
         Send "{Home}{Home}+{End}{BackSpace}{BackSpace}"
     }
     l:: {
-        Send "{Home}+{End}"
+        ; Send "{Home}+{End}"
+        Send "!l"
     }
     b:: {
     }
@@ -641,8 +643,14 @@ tmpTooltip(msg) {
     SetTimer () => ToolTip(), -5000
 }
 inCode() {
+    win := WinGetProcessName("A")
     switch (WinGetProcessName("A")) {
+        ; !不会像C那样连续……
         case "Code.exe": return 1
+        case "Trae CN.exe": return 1
+        case "idea64.exe": return 1
+        case "devenv.exe": return 1
+        case "微信开发者工具.exe": return 1
         default: return 0
     }
 }

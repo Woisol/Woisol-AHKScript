@@ -16,7 +16,8 @@ global active := true
         active := true
         tmpTooltip("Actived")
     }
-    Send "!+;"
+    Send "!+;" ; WGesture
+    Send "^{F12}"
 }
 #hotif active = true
 
@@ -50,13 +51,14 @@ CapsLock & 3::#3
 ; CapsLock & w::^!w
 CapsLock & q:: ActivateOrRun("QQ.exe", "D:/Social/QQ/QQ.exe", "^!q")
 CapsLock & w:: ActivateOrRun("WeChat.exe", "D:/Social/WeChat/WeChat.exe", "^!w")
-CapsLock & e:: ActivateOrRun("lx-music-desktop.exe", "D:/Amusment/lx-music-desktop/lx-music-desktop.exe", "!m")
+CapsLock & e:: ActivateOrRun("explorer.exe", "explorer")
+CapsLock & r:: ActivateOrRun("lx-music-desktop.exe", "D:/Amusment/lx-music-desktop/lx-music-desktop.exe", "!m")
+CapsLock & t:: ActivateOrRun("WindowsTerminal.exe", "wt", , true)
 CapsLock & s:: ActivateOrRun("AFFiNE-beta.exe",
-    "C:/Users/Woisol-G/AppData/Local/AFFiNE-beta/app-0.20.4-beta1/AFFiNE-beta.exe")
+    "C:/Users/Woisol-G/AppData/Local/AFFiNE-beta/AFFiNE-beta.exe")
 CapsLock & d:: ActivateOrRun("msedge.exe", "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe")
 CapsLock & f:: ActivateOrRun("Trae CN.exe", "D:/Coding/Trae CN/Trae CN.exe")
 CapsLock & g:: ActivateOrRun("Code.exe", "D:/Coding/VSCode/Code.exe")
-CapsLock & t:: ActivateOrRun("WindowsTerminal.exe", "wt", , true)
 
 ; @section-3
 3::3

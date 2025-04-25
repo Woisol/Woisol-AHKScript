@@ -53,7 +53,7 @@ CapsLock & q:: ActivateOrRun("QQ.exe", "D:/Social/QQ/QQ.exe", "^!q")
 CapsLock & w:: ActivateOrRun("WeChat.exe", "D:/Social/WeChat/WeChat.exe", "^!w")
 ; CapsLock & e:: ActivateOrRun("explorer.exe", "explorer") ;基本无用
 CapsLock & r:: ActivateOrRun("lx-music-desktop.exe", "D:/Amusment/lx-music-desktop/lx-music-desktop.exe", "!m")
-CapsLock & t:: ActivateOrRun("WindowsTerminal.exe", "wt", , true)
+CapsLock & t:: ActivateOrRun("WindowsTerminal.exe", "C:/Program Files/WindowsApps/Microsoft.WindowsTerminal_1.22.10731.0_x64__8wekyb3d8bbwe/wt.exe", , true)
 CapsLock & s:: ActivateOrRun("AFFiNE-beta.exe",
     "C:/Users/Woisol-G/AppData/Local/AFFiNE-beta/AFFiNE-beta.exe")
 CapsLock & d:: ActivateOrRun("msedge.exe", "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe")

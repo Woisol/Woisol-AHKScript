@@ -21,7 +21,7 @@ global active := true
 }
 #hotif active = true
 
-; @section-CapsLocko
+; @section-CapsLock
 CapsLock:: return
 !CapsLock:: {
     CapsLock := GetKeyState("CapsLock", "T")
@@ -53,7 +53,8 @@ CapsLock & q:: ActivateOrRun("QQ.exe", "D:/Social/QQ/QQ.exe", "^!q")
 CapsLock & w:: ActivateOrRun("WeChat.exe", "D:/Social/WeChat/WeChat.exe", "^!w")
 ; CapsLock & e:: ActivateOrRun("explorer.exe", "explorer") ;基本无用
 CapsLock & r:: ActivateOrRun("lx-music-desktop.exe", "D:/Amusment/lx-music-desktop/lx-music-desktop.exe", "!m")
-CapsLock & t:: ActivateOrRun("WindowsTerminal.exe", "C:/Program Files/WindowsApps/Microsoft.WindowsTerminal_1.22.10731.0_x64__8wekyb3d8bbwe/wt.exe", , true)
+CapsLock & t:: ActivateOrRun("WindowsTerminal.exe",
+    "C:/Program Files/WindowsApps/Microsoft.WindowsTerminal_1.22.10731.0_x64__8wekyb3d8bbwe/wt.exe", , true)
 CapsLock & s:: ActivateOrRun("AFFiNE-beta.exe",
     "C:/Users/Woisol-G/AppData/Local/AFFiNE-beta/AFFiNE-beta.exe")
 CapsLock & d:: ActivateOrRun("msedge.exe", "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe")
@@ -87,6 +88,9 @@ CapsLock & v:: ActivateOrRun("Figma.exe", "D:/Coding/Figma/Figma.exe")
     loop 5
         Send "{WheelDown}"
 }
+
+3 & d:: FillWindows()
+3 & f:: FillWindows(0)
 
 ; @section-;
 `;::;
@@ -728,4 +732,18 @@ ActivateOrRun(win_exe, path, shortcut := "", admin := false) {
     }
     Send "{CapsLock up}"
 
+}
+
+FillWindows(vertical := 1, margin := 20) {
+    activeWin := WinGetID("A")
+
+    WinGetPos(&x, &y, &w, &h, activeWin)
+
+    MonitorGetWorkArea(, &left, &top, &right, &bottom)
+
+    if (vertical = 1) {
+        WinMove(x, top + margin, w, bottom - top - margin * 2, activeWin)
+    } else {
+        WinMove(left + margin, y, right - left - margin * 2, h, activeWin)
+    }
 }

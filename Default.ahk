@@ -731,19 +731,75 @@ ActivateOrRun(win_exe, path, shortcut := "", admin := false) {
             Run path
     }
     Send "{CapsLock up}"
-
 }
-
-FillWindows(vertical := 1, margin := 20) {
+global lastWinSizeV := Map()  ; 存储竖向调整的原始大小
+global lastWinSizeH := Map()  ; 存储横向调整的原始大小
+global lastWinTimer := 0
+FillWindows(vertical := 1, margin := 20, deleteDelay := 0) {
+    global
     activeWin := WinGetID("A")
-
     WinGetPos(&x, &y, &w, &h, activeWin)
+    monitorNum := _MonitorFromWindow(activeWin)
+    MonitorGetWorkArea(monitorNum, &left, &top, &right, &bottom)
 
-    MonitorGetWorkArea(, &left, &top, &right, &bottom)
+    sizeMap := vertical ? lastWinSizeV : lastWinSizeH
 
+    if (sizeMap.Has(activeWin)) {
+        origSize := sizeMap[activeWin]
+        if (vertical = 1 && y = top + margin && h = bottom - top - margin * 2) {
+            WinMove(origSize.x, origSize.y, origSize.w, origSize.h, activeWin)
+            sizeMap.Delete(activeWin)
+            return
+        } else if (vertical = 0 && x = left + margin && w = right - left - margin * 2) {
+            WinMove(origSize.x, origSize.y, origSize.w, origSize.h, activeWin)
+            sizeMap.Delete(activeWin)
+            return
+        }
+    }
+
+    ; 存储当前窗口原始尺寸
+    sizeMap[activeWin] := { x: x, y: y, w: w, h: h }
+    lastWinTimer := A_TickCount
+
+    ; 调整窗口大小
     if (vertical = 1) {
         WinMove(x, top + margin, w, bottom - top - margin * 2, activeWin)
     } else {
         WinMove(left + margin, y, right - left - margin * 2, h, activeWin)
     }
+
+    ; 清除存储的尺寸
+    if (deleteDelay != 0)
+        SetTimer(() =>
+            sizeMap.Has(activeWin) ?
+                sizeMap.Delete(activeWin) : ""
+        , -deleteDelay)
+    ; if (vertical = 1) {
+    ;     WinMove(x, top + margin, w, bottom - top - margin * 2, activeWin)
+    ; } else {
+    ;     WinMove(left + margin, y, right - left - margin * 2, h, activeWin)
+    ; }
+}
+
+;** Utils
+_MonitorFromWindow(winHandle) {
+    ; static monitorCoords := Map()
+
+    ; 只在第一次运行或显示器配置改变时获取显示器信息
+    ;! 由于操作不频繁，还是每次检测防止稳定出现无法检测显示器的问题
+    ; if (monitorCoords.Count = 0) {
+    WinGetPos(&winX, &winY, &winW, &winH, winHandle)
+    centerX := winX + winW / 2
+    centerY := winY + winH / 2
+    loop MonitorGetCount() {
+        MonitorGet(A_Index, &l, &t, &r, &b)
+        if (centerX >= l && centerX <= r
+            && centerY >= t && centerY <= b) {
+            return A_Index
+        }
+    }
+    ; }
+
+    ; 查找匹配的显示器
+    return 1
 }

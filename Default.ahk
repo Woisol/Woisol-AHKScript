@@ -54,7 +54,7 @@ CapsLock & w:: ActivateOrRun("WeChat.exe", "D:/Social/WeChat/WeChat.exe", "^!w")
 ; CapsLock & e:: ActivateOrRun("explorer.exe", "explorer") ;基本无用
 CapsLock & r:: ActivateOrRun("lx-music-desktop.exe", "D:/Amusment/lx-music-desktop/lx-music-desktop.exe", "!m")
 CapsLock & t:: ActivateOrRun("WindowsTerminal.exe",
-    "C:/Program Files/WindowsApps/Microsoft.WindowsTerminal_1.22.10731.0_x64__8wekyb3d8bbwe/wt.exe", , true)
+    "C:\Program Files\WindowsApps\Microsoft.WindowsTerminal_1.22.11141.0_x64__8wekyb3d8bbwe\wt.exe -c", , true)
 CapsLock & s:: ActivateOrRun("AFFiNE-beta.exe",
     "C:/Users/Woisol-G/AppData/Local/AFFiNE-beta/AFFiNE-beta.exe")
 CapsLock & d:: ActivateOrRun("msedge.exe", "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe")
@@ -535,6 +535,8 @@ CapsLock & v:: ActivateOrRun("Figma.exe", "D:/Coding/Figma/Figma.exe")
         else
             SendLoop("^{BackSpace}")
     }
+    . & q:: SendLoop("{Browser_Back}")
+    . & z:: SendLoop("{Browser_Forward}")
 
     . & /::^/
     ^+k:: {

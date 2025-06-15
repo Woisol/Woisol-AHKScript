@@ -765,7 +765,7 @@ FillWindows(vertical := 1, margin := 20, deleteDelay := 0) {
 
     ; 调整窗口大小
     if (vertical = 1) {
-        WinMove(x, top + margin, w, bottom - top - margin * 2, activeWin)
+        WinMove(x, top + margin, w, bottom - top - margin, activeWin)
     } else {
         WinMove(left + margin, y, right - left - margin * 2, h, activeWin)
     }

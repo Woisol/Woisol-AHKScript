@@ -748,7 +748,7 @@ FillWindows(vertical := 1, margin := 20, deleteDelay := 0) {
 
     if (sizeMap.Has(activeWin)) {
         origSize := sizeMap[activeWin]
-        if (vertical = 1 && y = top + margin && h = bottom - top - margin * 2) {
+        if (vertical = 1 && y = top + margin && h = bottom - top - margin) {
             WinMove(origSize.x, origSize.y, origSize.w, origSize.h, activeWin)
             sizeMap.Delete(activeWin)
             return

@@ -53,7 +53,7 @@ CapsLock & q:: ActivateOrRun("D:/Social/QQ/QQ.exe", "QQ.exe", "^!q")
 CapsLock & w:: ActivateOrRun("D:/Social/WeChat/WeChat.exe", "WeChat.exe", "^!w")
 ; CapsLock & e:: ActivateOrRun("explorer.exe", "explorer") ;基本无用
 CapsLock & r:: ActivateOrRun("D:/Amusment/lx-music-desktop/lx-music-desktop.exe", "lx-music-desktop.exe", "!m")
-CapsLock & t:: ActivateOrRun("wt", , , true)
+CapsLock & t:: ActivateOrRun("wt", , , true, "D:/")
 ; 在 wt 中 ahk 会无法回收 CapsLock 的状态，暂时禁用窗口检测直接打开()
 ; CapsLock & t:: ActivateOrRun("WindowsTerminal.exe", "wt", , true)
 CapsLock & s:: ActivateOrRun("C:/Users/Woisol-G/AppData/Local/AFFiNE-beta/AFFiNE-beta.exe", "AFFiNE-beta.exe")
@@ -703,9 +703,11 @@ SendLoop(key) {
 ;     else
 ;         SendLoop(key)
 ; }
-ActivateOrRun(path, win_exe := "", shortcut := "", admin := false) {
+ActivateOrRun(path, win_exe := "", shortcut := "", admin := false, working_dir := "") {
     ; ;!逻辑优化
     ; "ahk_exe "
+    if (working_dir != "")
+        SetWorkingDir working_dir
     if (ProcessExist(win_exe) || win_exe = "") {
         if shortcut
             Send shortcut

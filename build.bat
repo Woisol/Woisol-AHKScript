@@ -1,0 +1,1 @@
+"C:\Program Files\AutoHotkey\Ahk2Exe.exe" /base "C:\Program Files\AutoHotkey\UX\AutoHotkeyUX.exe" /in D:\Code\Tool\ahk\Default.ahk /out D:\Code\Tool\ahk\Default.exe

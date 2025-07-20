@@ -49,18 +49,18 @@ CapsLock & 3::#3
 
 ; CapsLock & q::^!q
 ; CapsLock & w::^!w
-CapsLock & q:: ActivateOrRun("QQ.exe", "D:/Social/QQ/QQ.exe", "^!q")
-CapsLock & w:: ActivateOrRun("WeChat.exe", "D:/Social/WeChat/WeChat.exe", "^!w")
+CapsLock & q:: ActivateOrRun("D:/Social/QQ/QQ.exe", "QQ.exe", "^!q")
+CapsLock & w:: ActivateOrRun("D:/Social/WeChat/WeChat.exe", "WeChat.exe", "^!w")
 ; CapsLock & e:: ActivateOrRun("explorer.exe", "explorer") ;基本无用
-CapsLock & r:: ActivateOrRun("lx-music-desktop.exe", "D:/Amusment/lx-music-desktop/lx-music-desktop.exe", "!m")
-CapsLock & t:: ActivateOrRun("WindowsTerminal.exe",
-    "C:\Program Files\WindowsApps\Microsoft.WindowsTerminal_1.22.11141.0_x64__8wekyb3d8bbwe\wt.exe -c", , true)
-CapsLock & s:: ActivateOrRun("AFFiNE-beta.exe",
-    "C:/Users/Woisol-G/AppData/Local/AFFiNE-beta/AFFiNE-beta.exe")
-CapsLock & d:: ActivateOrRun("msedge.exe", "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe")
-CapsLock & f:: ActivateOrRun("Trae CN.exe", "D:/Coding/Trae CN/Trae CN.exe")
-CapsLock & g:: ActivateOrRun("Code.exe", "D:/Coding/VSCode/Code.exe")
-CapsLock & v:: ActivateOrRun("Figma.exe", "D:/Coding/Figma/Figma.exe")
+CapsLock & r:: ActivateOrRun("D:/Amusment/lx-music-desktop/lx-music-desktop.exe", "lx-music-desktop.exe", "!m")
+CapsLock & t:: ActivateOrRun("wt", , , true)
+; 在 wt 中 ahk 会无法回收 CapsLock 的状态，暂时禁用窗口检测直接打开()
+; CapsLock & t:: ActivateOrRun("WindowsTerminal.exe", "wt", , true)
+CapsLock & s:: ActivateOrRun("C:/Users/Woisol-G/AppData/Local/AFFiNE-beta/AFFiNE-beta.exe", "AFFiNE-beta.exe")
+CapsLock & d:: ActivateOrRun("C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe", "msedge.exe")
+CapsLock & f:: ActivateOrRun("D:/Coding/VSCode/Code.exe", "Code.exe")
+; CapsLock & g:: ActivateOrRun("D:/Coding/Trae CN/Trae CN.exe", "Trae CN.exe")
+CapsLock & v:: ActivateOrRun("D:/Coding/Figma/Figma.exe", "Figma.exe")
 
 ; @section-3
 3::3
@@ -703,10 +703,10 @@ SendLoop(key) {
 ;     else
 ;         SendLoop(key)
 ; }
-ActivateOrRun(win_exe, path, shortcut := "", admin := false) {
+ActivateOrRun(path, win_exe := "", shortcut := "", admin := false) {
     ; ;!逻辑优化
     ; "ahk_exe "
-    if ProcessExist(win_exe) {
+    if (ProcessExist(win_exe) || win_exe = "") {
         if shortcut
             Send shortcut
         else if WinActive("ahk_exe " win_exe)

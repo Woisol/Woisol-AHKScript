@@ -1,3 +1,5 @@
+global LONG_PRESS_TIME := 200
+
 ; @todo 添加“哨兵”模式专门用于闲置电脑时切歌等操作
 global mode := 0
 ; global hasOpt := false
@@ -50,7 +52,7 @@ CapsLock & 3::#3
 ; CapsLock & q::^!q
 ; CapsLock & w::^!w
 CapsLock & q:: ActivateOrRun("D:/Social/QQ/QQ.exe", "QQ.exe", "^!q")
-CapsLock & w:: ActivateOrRun("D:/Social/WeChat/WeChat.exe", "WeChat.exe", "^!w")
+CapsLock & w:: ActivateOrRun("D:/Social/Weixin/Weixin.exe", "WeChat.exe", "^!w")
 ; CapsLock & e:: ActivateOrRun("explorer.exe", "explorer") ;基本无用
 CapsLock & r:: ActivateOrRun("D:/Amusment/lx-music-desktop/lx-music-desktop.exe", "lx-music-desktop.exe", "!m")
 CapsLock & t:: ActivateOrRun("wt", , , true, "D:/")
@@ -61,6 +63,32 @@ CapsLock & d:: ActivateOrRun("C:/Program Files (x86)/Microsoft/Edge/Application/
 CapsLock & f:: ActivateOrRun("D:/Coding/VSCode/Code.exe", "Code.exe")
 ; CapsLock & g:: ActivateOrRun("D:/Coding/Trae CN/Trae CN.exe", "Trae CN.exe")
 CapsLock & v:: ActivateOrRun("D:/Coding/Figma/Figma.exe", "Figma.exe")
+
+` & 1:: {
+    HandleKeyDown(1)
+    KeyWait "1"
+    HandleKeyUp()
+}
+` & 2:: {
+    HandleKeyDown(2)
+    KeyWait "2"
+    HandleKeyUp()
+}
+` & 3:: {
+    HandleKeyDown(3)
+    KeyWait "3"
+    HandleKeyUp()
+}
+` & 4:: {
+    HandleKeyDown(4)
+    KeyWait "4"
+    HandleKeyUp()
+}
+` & 5:: {
+    HandleKeyDown(5)
+    KeyWait "5"
+    HandleKeyUp()
+}
 
 ; @section-3
 3::3
@@ -784,6 +812,121 @@ FillWindows(vertical := 1, margin := 20, deleteDelay := 0) {
     ;     WinMove(left + margin, y, right - left - margin * 2, h, activeWin)
     ; }
 }
+
+global processPosList := Map(
+    "Code.exe", Map(
+        1, [20, 20, 2520, 1372],
+        2, [20, 20, 900, 1372],
+        3, [940, 20, 1600, 1372],
+        4, [-1580, -332, 1560, 2492],
+        5, [-1580, -332, 1560, 1246]
+    ),
+    "msedge.exe", Map(
+        1, [20, 20, 2520, 1372],
+        2, [20, 20, 1300, 1372],
+        3, [-1580, -332, 1560, 2492],
+        4, [-1580, -332, 1560, 1246]
+    ),
+    "AFFiNE-beta.exe", Map(
+        1, [20, 20, 2520, 1372],
+        2, [20, 20, 1300, 1372],
+        3, [-1577, 914, 1560, 1246]
+    ),
+    "lx-music-desktop.exe", Map(
+        1, [-828, 1620, 828, 540]
+    ),
+    "Clash Verge.exe", Map(
+        1, [-1600, 1519, 914, 641]
+    ),
+    "Weixin.exe", Map(
+        1, [-750, -332, 730, 650],
+        2, [1250, 200, 1270, 1080]
+    ),
+    "QQ.exe", Map(
+        1, [-1577, -332, 730, 650],
+        2, [60, 200, 1270, 1080]
+    ),
+)
+
+; 保存当前窗口位置和尺寸到指定槽位
+SaveWindowPos(index) {
+    global processPosList
+    activeWin := WinGetID("A")
+    processName := WinGetProcessName(activeWin)
+
+    ; 获取窗口位置和尺寸
+    WinGetPos(&x, &y, &w, &h, activeWin)
+
+    ; 初始化进程映射（如果不存在）
+    if (!processPosList.Has(processName)) {
+        processPosList[processName] := Map()
+    }
+
+    ; 保存到指定槽位 [x, y, width, height]
+    processPosList[processName][index] := [x, y, w, h]
+
+    tmpTooltip("已将 " . processName . " 保存到槽位 " . index)
+    OutputDebug(processName . ": " . x . "," . y . "," . w . "," . h)
+}
+
+; 从指定槽位恢复窗口位置和尺寸
+RestoreWindowPos(index) {
+    global processPosList
+    activeWin := WinGetID("A")
+    processName := WinGetProcessName(activeWin)
+
+    ; 检查进程和槽位是否存在
+    if (!processPosList.Has(processName)) {
+        tmpTooltip("进程 " . processName . " 没有保存的位置信息")
+        return false
+    }
+
+    if (!processPosList[processName].Has(index)) {
+        tmpTooltip("槽位 " . index . " 没有保存的位置信息")
+        return false
+    }
+
+    ; 获取保存的位置信息
+    pos := processPosList[processName][index]
+    x := pos[1]
+    y := pos[2]
+    w := pos[3]
+    h := pos[4]
+
+    ; 恢复窗口位置和尺寸
+    WinMove(x, y, w, h, activeWin)
+
+    tmpTooltip("已从槽位 " . index . " 恢复 " . processName . " 位置")
+    return true
+}
+
+; 长按辅助函数 - 短按恢复位置，长按保存位置
+global pressStartTime := 0
+global currentSlotIndex := 0
+
+HandleKeyDown(slotIndex) {
+    global pressStartTime, currentSlotIndex
+    pressStartTime := A_TickCount
+    currentSlotIndex := slotIndex
+}
+
+HandleKeyUp() {
+    global pressStartTime, currentSlotIndex
+    pressDuration := A_TickCount - pressStartTime
+
+    if (pressDuration >= LONG_PRESS_TIME) {
+        ; 长按 - 保存窗口位置
+        SaveWindowPos(currentSlotIndex)
+    } else {
+        ; 短按 - 恢复窗口位置
+        RestoreWindowPos(currentSlotIndex)
+    }
+
+    pressStartTime := 0
+    currentSlotIndex := 0
+}
+
+; LongPress()
 
 ;** Utils
 _MonitorFromWindow(winHandle) {

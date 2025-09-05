@@ -55,7 +55,7 @@ HandleKeyUp() {
   global pressStartTime, currentSlotIndex
   pressDuration := A_TickCount - pressStartTime
 
-  if (pressDuration >= LONG_PRESS_TIME) {
+  if (pressDuration >= LONG_PRESS_TIME_L) {
     ; 长按 - 保存窗口位置
     SaveWindowPos(currentSlotIndex)
   } else {

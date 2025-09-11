@@ -4,166 +4,55 @@
 
 ; @section-;
 `;::;
-`; & q:: {
-  if (isDoubleClick('; & q'))
-    Send '{BackSpace}{Raw}^'
-  else
-    SendText '*'
-}
-`; & w:: {
-  if (isDoubleClick('; & w'))
-    Send '{BackSpace}~'
-  else
-    SendText '#'
-}
-`; & e:: {
-  if (isDoubleClick('; & e'))
-    Send '{BackSpace}"'
-  else
-    SendText '>'
-}
-`; & a:: {
-  if (isDoubleClick('; & a'))
-    Send '{BackSpace}='
-  else
-    SendText '+'
-}
-`; & s:: {
-  if (isDoubleClick('; & s'))
-    Send '{BackSpace}_'
-  else
-    SendText '-'
-}
-`; & d:: {
-  if (isDoubleClick('; & d'))
-    Send '{BackSpace}\'
-  else
-    SendText '/'
-}
-`; & z:: {
-  if (isDoubleClick('; & z'))
-    Send '{BackSpace}@'
-  else
-    SendText '$'
-}
+`; & q:: handleShortLongPress("q", () => SendText('*'), () => Send('{Raw}^'))
+`; & w:: handleShortLongPress("w", () => SendText('#'), () => Send('~'))
+`; & e:: handleShortLongPress("e", () => SendText('>'), () => Send('"'))
+`; & a:: handleShortLongPress("a", () => SendText('+'), () => Send('='))
+`; & s:: handleShortLongPress("s", () => SendText('-'), () => Send('_'))
+`; & d:: handleShortLongPress("d", () => SendText('/'), () => Send('\'))
+`; & z:: handleShortLongPress("z", () => SendText('$'), () => Send('@'))
 `; & x::%
-`; & c:: {
-  if (isDoubleClick('; & c')) {
-    Send '{BackSpace}|'
-  } else {
-    SendText '&'
-  }
-}
+`; & c:: handleShortLongPress("c", () => SendText('&'), () => Send('|'))
 
-`; & j:: {
-  Send "^v"
-}
+`; & j:: Send "^v"
+
 `; & r:: {
   if (inCode()) {
     SendText "("
     return
   }
-  if (isDoubleClick('; & r')) {
-    Send "{Right}{BackSpace}{BackSpace}{Raw})"
-    return
-  } else {
-    Send "^c"
-    Send "("
-    Send ")"
-    Send "{Left}"
-  }
+  handleShortLongPress("r", () => Send("^c(){Left}"), () => Send("{Raw})"))
 }
 `; & f:: {
   if (inCode()) {
     SendText "["
     return
   }
-  if (isDoubleClick('; & f')) {
-    Send "{BackSpace}"
-    return
-  } else {
-    Send "^c"
-    SendText "["
-    SendText "]"
-    Send "{Left}"
-  }
+  handleShortLongPress("f", () => (Send("^c"), SendText("[]"), Send("{Left}")), () => SendText("]"))
 }
 `; & v:: {
   if (inCode()) {
     SendText "{"
     return
   }
-  if (isDoubleClick('; & v')) {
-    Send "{BackSpace}"
-    return
-  } else {
-    Send "^c"
-    SendText "{"
-    SendText "}"
-    Send "{Left}"
-  }
+  handleShortLongPress("v", () => (Send("^c"), SendText("{}"), Send("{Left}")), () => SendText("}"))
 }
-`; & t:: {
-  doubleClick := isDoubleClick('; & t')
-  if (inCode()) {
-    if (doubleClick) {
-      Send '{BackSpace}{Raw}"'
-      return
-    }
-    SendText "'"
-    return
-  }
-  if (doubleClick) {
-    Send '{BackSpace}{Raw}"'
-    ; Send '"'
-    ; Send '"'
-    ; Send "{Left}"
-  } else {
-    Send "^c"
-    Send "'"
-    ; Send "'"
-    ; Send "{Left}"
-  }
-}
-`; & g:: {
-  if (isDoubleClick('; & g'))
-    Send '{BackSpace}{Raw}!'
-  else
-    Send '?'
-}
+`; & t:: handleShortLongPress("t", () => ((inCode() && Send("^c")), Send("'")), () => Send('{Raw}"'))
+`; & g:: handleShortLongPress("g", () => Send("?"), () => Send('{Raw}!'))
 `; & b:: {
   if (inCode()) {
     SendText "<"
     return
   }
-  if (isDoubleClick('; & b')) {
-    Send "{BackSpace}"
-    return
-  } else {
-    Send "^c"
-    SendText "<"
-    SendText ">"
-    Send "{Left}"
-  }
+  handleShortLongPress("b", () => (Send("^c"), SendText("<>"), Send("{Left}")), () => Send(">"))
 }
-
 +9:: {
   if (inCode())
     Send "("
   else
     Send "(){Left}"
 }
-[:: {
-  if (isDoubleClick("[")) {
-    Send "{Right}{Backspace}{Backspace}["
-  }
-  else if (inCode())
-    SendText "["
-  else {
-    SendText "[]"
-    Send "{Left}"
-  }
-}
+[:: handleShortLongPress("[", () => (inCode() ? SendText("[") : SendText("[]"), Send("{Left}")), () => Send("["))
 +[:: {
   if (inCode())
     SendText "{"

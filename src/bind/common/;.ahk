@@ -52,7 +52,7 @@
   else
     Send "(){Left}"
 }
-[:: handleShortLongPress("[", () => (inCode() ? SendText("[") : SendText("[]"), Send("{Left}")), () => Send("["))
+[:: handleShortLongPress("[", () => (inCode() ? SendText("[") : (SendText("[]"), Send("{Left}"))), () => Send("["))
 +[:: {
   if (inCode())
     SendText "{"

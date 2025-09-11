@@ -52,38 +52,12 @@
     tmpTooltip("Insert Mode")
     mode := 0
   }
-  g:: {
-    global
-    if (isDoubleClick("g")) {
-      if (inCode()) {
-        Send "^g"
-        if (times = 0)
-          SendText "1"
-        else
-          SendText times
-        Send "{Enter}"
-      } else {
-        Send "^{Home}"
-        times := Mod(times, 1000)
-        loop times - 1
-          Send "{Down}"
-      }
-      times := 0
-    } else {
-      Send "{End}"
-    }
-  }
+  g:: handleShortLongPress("g", () => Send("{Blind}{End}"), _handleGLongPress)
   +g:: SendLoop("+{End}")
   c:: SendLoop("{BackSpace}")
   +c:: SendLoop("^{BackSpace}")
   ^c::^c
-  x:: {
-    if (isDoubleClick("x")) {
-      Send "{Esc}"
-    } else {
-      Send "^c"
-    }
-  }
+  x::Esc
   v::^v
   #v::#v
   z:: SendLoop("^z")

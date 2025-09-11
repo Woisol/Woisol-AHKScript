@@ -18,34 +18,27 @@ global mode := 0
   . & e:: SendLoop("{Blind}{Up}")
   . & w:: SendLoop("{Blind}^{Left}")
   . & r:: SendLoop("{Blind}^{Right}")
-  . & g:: {
+  . & g:: handleShortLongPress("g", () => Send("{Blind}{End}"), _handleGLongPress)
+  _handleGLongPress() {
     global
-    if (isDoubleClick(". & g")) {
-      if (inCode()) {
-        Send "^g"
-        if (times = 0)
-          SendText "1"
-        else
-          SendText times
-        Send "{Enter}"
-      } else {
-        Send "^{Home}"
-        times := Mod(times, 1000)
-        loop times - 1
-          Send "{Down}"
-      }
-      times := 0
+    if (inCode()) {
+      Send "^g"
+      if (times = 0)
+        SendText "1"
+      else
+        SendText times
+      Send "{Enter}"
     } else {
-      Send "{Blind}{End}"
+      Send "^{Home}"
+      times := Mod(times, 1000)
+      loop times - 1
+        Send "{Down}"
     }
+    times := 0
   }
   . & h:: {
     global
-    if (isDoubleClick(". & h")) {
-      Send "^{End}"
-    }
-    else if (times = 0)
-      Send "^{Home}"
+    handleShortLongPress("h", () => Send("^{Home}"), () => Send("^{End}"))
   }
   . & x::Esc
   . & c:: {

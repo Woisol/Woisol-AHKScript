@@ -4,6 +4,14 @@ isDoubleClick(key) {
   return A_PriorHotkey == key && A_TimeSincePriorHotkey < 200
 }
 
+handleShortLongPress(key, shortPressCallback, longPressCallback) {
+  if (KeyWait(key, "T" . LONG_PRESS_TIME_STR)) {
+    shortPressCallback()
+  } else {
+    longPressCallback()
+  }
+}
+
 global times := 0
 SendLoop(key) {
   global
@@ -42,27 +50,27 @@ SendLoop(key) {
 ; }
 
 ; 长按辅助函数 - 短按恢复位置，长按保存位置
-global pressStartTime := 0
-global currentSlotIndex := 0
+; global pressStartTime := 0
+; global currentSlotIndex := 0
 
-HandleKeyDown(slotIndex) {
-  global pressStartTime, currentSlotIndex
-  pressStartTime := A_TickCount
-  currentSlotIndex := slotIndex
-}
+; HandleKeyDown() {
+;   global pressStartTime, currentSlotIndex
+;   pressStartTime := A_TickCount
+; }
 
-HandleKeyUp() {
-  global pressStartTime, currentSlotIndex
-  pressDuration := A_TickCount - pressStartTime
+; HandleKeyUp(shortPressCallback, longPressCallback) {
+;   global pressStartTime
+;   pressDuration := A_TickCount - pressStartTime
 
-  if (pressDuration >= LONG_PRESS_TIME_L) {
-    ; 长按 - 保存窗口位置
-    SaveWindowPos(currentSlotIndex)
-  } else {
-    ; 短按 - 恢复窗口位置
-    RestoreWindowPos(currentSlotIndex)
-  }
+;   if (pressDuration >= LONG_PRESS_TIME_L) {
+;     ; 长按 - 保存窗口位置
+;     ; SaveWindowPos(currentSlotIndex)
+;     longPressCallback()
+;   } else {
+;     ; 短按 - 恢复窗口位置
+;     ; RestoreWindowPos(currentSlotIndex)
+;     shortPressCallback()
+;   }
 
-  pressStartTime := 0
-  currentSlotIndex := 0
-}
+;   pressStartTime := 0
+; }

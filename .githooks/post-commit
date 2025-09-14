@@ -1,0 +1,4 @@
+#!/bin/sh
+# build each time we commit
+
+./build.bat

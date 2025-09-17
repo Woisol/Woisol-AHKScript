@@ -66,7 +66,11 @@ global mode := 0
     SendLoop("{Home}{Home}+{End}{BackSpace}{BackSpace}")
   }
   ^l:: {
-    if (!inCode())
+    if (inCode()) {
+      Send "^l"
+      return
+    }
+    else
       Send "{Home}+{End}"
   }
 

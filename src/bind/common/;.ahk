@@ -71,8 +71,11 @@
     SendText "<"
     return
   }
-  handleShortLongPress("b", () => (Send("^c"), SendText("<>"), Send("{Left}")), () => Send(">"))
+  ; handleShortLongPress("b", () => (Send("^c"), SendText("<>"), Send("{Left}")), () => Send(">"))
+  (Send("^c"), SendText("<>"), Send("{Left}")
+  )
 }
+' & b:: SendText(">")
 +9:: {
   if (inCode())
     Send "("

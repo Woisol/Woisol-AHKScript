@@ -28,5 +28,8 @@
     Send "{WheelDown}"
 }
 
+3 & 1:: Send "^{Home}"
+3 & 5:: Send "^{End}"
+
 3 & d:: FillWindows()
 3 & f:: FillWindows(0)

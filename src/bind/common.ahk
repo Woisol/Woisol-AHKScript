@@ -7,5 +7,5 @@
 #Include common\3.ahk
 #Include common\;.ahk
 
-#Include common\controller.ahk
+; #Include common\controller.ahk
 #HotIf

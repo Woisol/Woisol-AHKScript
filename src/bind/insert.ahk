@@ -18,7 +18,7 @@ global mode := 0
   . & e:: SendLoop("{Blind}{Up}")
   . & w:: SendLoop("{Blind}^{Left}")
   . & r:: SendLoop("{Blind}^{Right}")
-  . & g:: handleShortLongPress("g", () => Send("{Blind}{End}"), _handleGLongPress)
+  . & g:: handleLongPress("g", () => Send("{Blind}{End}"), _handleGLongPress)
   _handleGLongPress() {
     global
     if (inCode()) {
@@ -38,7 +38,7 @@ global mode := 0
   }
   . & h:: {
     global
-    handleShortLongPress("h", () => Send("^{Home}"), () => Send("^{End}"))
+    handleLongPress("h", () => Send("^{Home}"), () => Send("^{End}"))
   }
   . & x::Esc
   . & c:: {

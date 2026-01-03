@@ -4,8 +4,8 @@ isDoubleClick(key) {
   return A_PriorHotkey == key && A_TimeSincePriorHotkey < 200
 }
 
-handleShortLongPress(key, shortPressCallback, longPressCallback) {
-  if (KeyWait(key, "T" . LONG_PRESS_TIME_STR)) {
+handleLongPress(key, shortPressCallback, longPressCallback, longPressTime := LONG_PRESS_TIME_STR) {
+  if (KeyWait(key, "T" . longPressTime)) {
     shortPressCallback()
   } else {
     longPressCallback()

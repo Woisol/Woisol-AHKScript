@@ -52,7 +52,7 @@
     tmpTooltip("Insert Mode")
     mode := 0
   }
-  g:: handleShortLongPress("g", () => Send("{Blind}{End}"), _handleGLongPress)
+  g:: handleLongPress("g", () => Send("{Blind}{End}"), _handleGLongPress)
   +g:: SendLoop("+{End}")
   c:: SendLoop("{BackSpace}")
   +c:: SendLoop("^{BackSpace}")

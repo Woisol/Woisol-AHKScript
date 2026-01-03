@@ -5,15 +5,15 @@
 ; @section-;
 `;::;
 '::'
-`; & q:: handleShortLongPress("q", () => SendText('*'), () => Send('{Raw}^'))
-`; & w:: handleShortLongPress("w", () => SendText('#'), () => Send('~'))
-`; & e:: handleShortLongPress("e", () => SendText('>'), () => Send('"'))
-`; & a:: handleShortLongPress("a", () => SendText('+'), () => Send('='))
-`; & s:: handleShortLongPress("s", () => SendText('-'), () => Send('_'))
-`; & d:: handleShortLongPress("d", () => SendText('/'), () => Send('\'))
-`; & z:: handleShortLongPress("z", () => SendText('$'), () => Send('@'))
+`; & q:: handleLongPress("q", () => SendText('*'), () => Send('{Raw}^'))
+`; & w:: handleLongPress("w", () => SendText('#'), () => Send('~'))
+`; & e:: handleLongPress("e", () => SendText('>'), () => Send('"'))
+`; & a:: handleLongPress("a", () => SendText('+'), () => Send('='))
+`; & s:: handleLongPress("s", () => SendText('-'), () => Send('_'))
+`; & d:: handleLongPress("d", () => SendText('/'), () => Send('\'))
+`; & z:: handleLongPress("z", () => SendText('$'), () => Send('@'))
 `; & x::%
-`; & c:: handleShortLongPress("c", () => SendText('&'), () => Send('|'))
+`; & c:: handleLongPress("c", () => SendText('&'), () => Send('|'))
 
 ; `; & q:: SendText('*')
 ; ' & q:: Send('{Raw}^')
@@ -64,8 +64,8 @@
   )
 }
 ' & v:: SendText("}")
-`; & t:: handleShortLongPress("t", () => ((inCode() && Send("^c")), Send("'")), () => Send('{Raw}"'))
-`; & g:: handleShortLongPress("g", () => Send("?"), () => Send('{Raw}!'))
+`; & t:: handleLongPress("t", () => ((inCode() && Send("^c")), Send("'")), () => Send('{Raw}"'))
+`; & g:: handleLongPress("g", () => Send("?"), () => Send('{Raw}!'))
 `; & b:: {
   if (inCode()) {
     SendText "<"
@@ -82,7 +82,7 @@
   else
     Send "(){Left}"
 }
-[:: handleShortLongPress("[", () => (inCode() ? SendText("[") : (SendText("[]"), Send("{Left}"))), () => Send("["))
+[:: handleLongPress("[", () => (inCode() ? SendText("[") : (SendText("[]"), Send("{Left}"))), () => Send("["))
 +[:: {
   if (inCode())
     SendText "{"
